@@ -1,0 +1,76 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: tpaistos-db
+    environment:
+      POSTGRES_USER: tpaistos
+      POSTGRES_PASSWORD: tpaistos
+      POSTGRES_DB: tpaistos
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tpaistos"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  adminer:
+    image: adminer:4
+    container_name: tpaistos-adminer
+    ports:
+      - "8080:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: db
+    depends_on:
+      db:
+        condition: service_healthy
+
+  api:
+    build:
+      context: ./api
+    container_name: tpaistos-api
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+      DATABASE_URL: postgresql://tpaistos:tpaistos@db:5432/tpaistos
+      STRIPE_SECRET_KEY: sk_test_placeholder
+      STRIPE_WEBHOOK_SECRET: whsec_placeholder
+    ports:
+      - "3001:3001"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./api/src:/app/src
+      - ./api/tsconfig.json:/app/tsconfig.json:ro
+      - ./api/tsconfig.build.json:/app/tsconfig.build.json:ro
+      - ./api/.eslintrc.cjs:/app/.eslintrc.cjs:ro
+      - ./api/scripts:/app/scripts
+      - ./debiteurs.csv:/app/debiteurs.csv:ro
+
+  web:
+    build:
+      context: ./web
+    container_name: tpaistos-web
+    environment:
+      NODE_ENV: development
+      NEXT_PUBLIC_API_URL: http://localhost:3001
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: pk_test_placeholder
+    ports:
+      - "3000:3000"
+    depends_on:
+      api:
+        condition: service_started
+    volumes:
+      - ./web/app:/app/app
+      - ./web/public:/app/public
+      - ./web/next.config.js:/app/next.config.js:ro
+      - ./web/tsconfig.json:/app/tsconfig.json
+      - ./web/next-env.d.ts:/app/next-env.d.ts
+
+volumes:
+  db_data:
