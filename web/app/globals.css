@@ -18,3 +18,12 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+.clickable-row {
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+
+.clickable-row:hover {
+  background-color: #f8fafc;
+}

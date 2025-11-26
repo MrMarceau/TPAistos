@@ -6,6 +6,7 @@
 - Lancer la stack : `docker compose up --build`.
 - Exécuter les migrations TypeORM : `docker compose run --rm api pnpm db:migrate` (base `tpaistos`, user/pass `tpaistos`).
 - Importer le CSV (`debiteurs.csv` monté dans le conteneur) : `docker compose run --rm api pnpm db:seed`.
+- Liste/détail des dettes côté front : http://localhost:3000/debts (cliquez une ligne pour le détail).
 - Points d’entrée : front http://localhost:3000, API http://localhost:3001/health, Adminer http://localhost:8080 (serveur db = `db`, user/pass/db = `tpaistos`).
 - Si vous modifiez `package.json` ou les configs compilateur, reconstruisez l’image concernée : `docker compose build api` ou `docker compose build web`.
 

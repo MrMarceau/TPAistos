@@ -1,5 +1,5 @@
 import { readFile } from 'fs/promises';
-import path from 'path';
+import * as path from 'path';
 import { parse } from 'csv-parse/sync';
 import { AppDataSource } from '../src/data-source';
 import { Debt, DebtStatus } from '../src/debt/debt.entity';
