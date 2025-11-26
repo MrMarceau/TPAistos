@@ -27,6 +27,7 @@
 
 ## Avant une mise en production
 - Authentification : aujourd’hui l’API est volontairement ouverte. En production il faudrait au minimum en sécuriser l’accès.
+- Environnements : pour un vrai produit, il faudrait au minimum trois environnements isolés (développement, pré‑production, production), chacun avec sa propre base de données et ses propres variables d'environnement. Ça permet de tester les migrations, les intégrations et les paiements sans impacter les données réelles ni la prod.
 - Validation des entrées : formaliser des DTO Input et Output pour toutes les routes, avec validation stricte (class-validator, éventuellement zod côté front mais je préfère class-validator qui s'intègre bien dans l'écosystème NestJS) afin de contrôler à 100% ce qui rentre et ce qui sort de l'API.
 - Journalisation : ajouter des logs structurés, des métriques avec un minimum d’alerting. Pour un contexte financier, garder une trace de jorunalisation est, je pense, obligatoire.
 - Sécurité : restreindre les origines CORS, ajouter du rate limiting sur les endpoints, configurer correctement les headers de sécurité, HTTPS partout.
