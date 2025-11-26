@@ -7,6 +7,7 @@
 - Exécuter les migrations TypeORM : `docker compose run --rm api pnpm db:migrate` (base `tpaistos`, user/pass `tpaistos`).
 - Importer le CSV (`debiteurs.csv` monté dans le conteneur) : `docker compose run --rm api pnpm db:seed`.
 - Liste/détail des dettes côté front : http://localhost:3000/debts (cliquez une ligne pour le détail).
+  - Paiement Stripe test : renseigner un fichier `.env` à la racine (chargé par docker-compose) avec `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` ou exportez-les dans votre shell.
 - Points d’entrée : front http://localhost:3000, API http://localhost:3001/health, Adminer http://localhost:8080 (serveur db = `db`, user/pass/db = `tpaistos`).
 - Si vous modifiez `package.json` ou les configs compilateur, reconstruisez l’image concernée : `docker compose build api` ou `docker compose build web`.
 
@@ -16,6 +17,7 @@
 - Base de données Postgres via Docker, Adminer pour l’administration.
 - Docker Compose oriente dev : dépendances installées en image, code bind-mount pour hot reload (`pnpm start:dev` côté API, `pnpm dev` côté front).
 - Node 20, TypeScript strict, ESLint minimal côté API; Next lint côté front.
+- Stripe test : endpoint `POST /debts/:id/pay` pour créer un PaymentIntent, webhook `POST /webhooks/stripe` pour marquer la dette comme payée sur `payment_intent.succeeded`.
 
 ## Avant une mise en production
 - Générer et committer les lockfiles (`pnpm install`), builder des images optimisées prod (Next `next build` + `next start`, Nest build TS -> JS).

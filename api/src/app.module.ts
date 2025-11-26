@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { Debt } from './debt/debt.entity';
 import { DebtModule } from './debt/debt.module';
+import { WebhookController } from './webhook.controller';
 
 const databaseUrl = process.env.DATABASE_URL || 'postgresql://tpaistos:tpaistos@db:5432/tpaistos';
 
@@ -18,7 +19,7 @@ const databaseUrl = process.env.DATABASE_URL || 'postgresql://tpaistos:tpaistos@
     TypeOrmModule.forFeature([Debt]),
     DebtModule
   ],
-  controllers: [AppController],
+  controllers: [AppController, WebhookController],
   providers: []
 })
 export class AppModule {}

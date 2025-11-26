@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { PaymentBox } from './PaymentBox';
 
 type Debt = {
   id: string;
@@ -7,6 +8,7 @@ type Debt = {
   debtSubject: string;
   debtAmount: number;
   status: string;
+  paidAt?: string | null;
 };
 
 function getApiBaseUrl() {
@@ -74,24 +76,15 @@ export default async function DebtDetailPage({ params }: { params: { id: string 
             {debt.status}
           </span>
         </div>
-        <button
-          type="button"
-          style={{
-            width: '100%',
-            padding: '12px 16px',
-            marginTop: 12,
-            borderRadius: 10,
-            border: 'none',
-            background: '#2563eb',
-            color: '#fff',
-            fontWeight: 700,
-            cursor: 'pointer',
-            opacity: debt.status === 'PAID' ? 0.5 : 1
-          }}
-          disabled={debt.status === 'PAID'}
-        >
-          Payer
-        </button>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
+          <span style={{ color: '#475569' }}>Payé le</span>
+          <span style={{ fontWeight: 600, color: debt.status === 'PAID' ? '#0f172a' : '#94a3b8' }}>
+            {debt.paidAt && debt.status === 'PAID'
+              ? new Date(debt.paidAt).toLocaleDateString('fr-FR', { year: 'numeric', month: 'short', day: 'numeric' })
+              : '—'}
+          </span>
+        </div>
+        <PaymentBox debtId={debt.id} status={debt.status} />
       </div>
     </main>
   );

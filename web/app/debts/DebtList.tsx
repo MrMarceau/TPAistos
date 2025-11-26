@@ -7,6 +7,7 @@ type Debt = {
   debtSubject: string;
   debtAmount: number;
   status: string;
+  paidAt?: string | null;
 };
 
 function getApiBaseUrl() {
@@ -47,6 +48,7 @@ function DebtTable({ debts }: { debts: Debt[] }) {
               <th style={{ padding: '12px 16px' }}>Objet</th>
               <th style={{ padding: '12px 16px' }}>Montant (€)</th>
               <th style={{ padding: '12px 16px' }}>Statut</th>
+              <th style={{ padding: '12px 16px' }}>Payé le</th>
             </tr>
           </thead>
           <tbody>
@@ -103,6 +105,13 @@ function DebtTable({ debts }: { debts: Debt[] }) {
                     >
                       {debt.status}
                     </span>
+                  </Link>
+                </td>
+                <td style={{ padding: 0 }}>
+                  <Link href={`/debts/${debt.id}`} style={{ display: 'block', padding: '12px 16px', color: '#475569' }}>
+                    {debt.paidAt && debt.status === 'PAID'
+                      ? new Date(debt.paidAt).toLocaleDateString('fr-FR', { year: 'numeric', month: 'short', day: 'numeric' })
+                      : '—'}
                   </Link>
                 </td>
               </tr>

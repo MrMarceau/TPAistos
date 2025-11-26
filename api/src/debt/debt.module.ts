@@ -7,6 +7,7 @@ import { DebtController } from './debt.controller';
 @Module({
   imports: [TypeOrmModule.forFeature([Debt])],
   providers: [DebtService],
-  controllers: [DebtController]
+  controllers: [DebtController],
+  exports: [DebtService]
 })
 export class DebtModule {}

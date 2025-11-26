@@ -37,8 +37,8 @@ services:
       NODE_ENV: development
       PORT: 3001
       DATABASE_URL: postgresql://tpaistos:tpaistos@db:5432/tpaistos
-      STRIPE_SECRET_KEY: sk_test_placeholder
-      STRIPE_WEBHOOK_SECRET: whsec_placeholder
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
     ports:
       - "3001:3001"
     depends_on:
@@ -60,7 +60,7 @@ services:
       NODE_ENV: development
       NEXT_PUBLIC_API_URL: http://localhost:3001
       API_INTERNAL_URL: http://api:3001
-      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: pk_test_placeholder
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}
     ports:
       - "3000:3000"
     depends_on:
